@@ -1,0 +1,88 @@
+<script type="text/javascript">
+RED.nodes.registerType("stasher", {
+    category: "config",
+    defaults: {
+        name: {value: ""},
+        duration: {value: 360000}
+    },
+    label: function() { return this.name|| "stasher" },
+    labelStyle: function() { return this.name ? "node_label_italic" : ""; }
+});
+
+RED.nodes.registerType("stasher-in", {
+    category: "function",
+    color: "#3FADB5",
+    defaults: {
+        name: {value: ""},
+        out: {value: ""}
+    },
+    inputs: 1,
+    outputs: 1,
+    icon: "db.png",
+    label: function() { return this.name|| "stasher" },
+    labelStyle: function() { return this.name ? "node_label_italic" : ""; },
+    oneditprepare: function(node, ) {
+        var candidateNodes = RED.nodes.filterNodes({type:"stasher-out"});
+        var inSubflow = !!RED.nodes.subflow(this.z);
+        var $select = $("#node-input-out").html("");
+        candidateNodes.forEach(function(node) {
+            var $opt = $("<option>").val(node.id).text(node.name);
+            $select.append($opt);
+        });
+    }
+});
+
+RED.nodes.registerType("stasher-out", {
+    category: "function",
+    color: "#3FADB5",
+    defaults: {
+        name: {value: ""},
+        stash: {value: "", type: "stasher"}
+    },
+    inputs: 1,
+    outputs: 1,
+    icon: "db.png",
+    align: "right",
+    label: function() { return this.name|| "stasher" },
+    labelStyle: function() { return this.name ? "node_label_italic" : ""; }
+});
+</script>
+
+<script type="text/x-red" data-template-name="stasher">
+    <div class="form-row">
+        <label for="node-config-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-config-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-duration"><i class="fa fa-tag"></i> Duration</label>
+        <input type="number" id="node-config-input-duration" placeholder="Duration">
+    </div>
+</script>
+
+<script type="text/x-red" data-template-name="stasher-in">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-out"><i class="fa fa-tag"></i> Out</label>
+        <select id="node-input-out"></select>
+    </div>
+    <!--
+    <div class="form-row">
+        <label for="node-input-out"><i class="fa fa-tag"></i> Out Stash Node</label>
+        <input type="text" id="node-input-out" placeholder="xxxxxxxx.xxxxxx">
+    </div>
+    -->
+</script>
+
+<script type="text/x-red" data-template-name="stasher-out">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-stash"><i class="fa fa-tag"></i> Stash</label>
+        <input type="text" id="node-input-stash">
+    </div>
+</script>

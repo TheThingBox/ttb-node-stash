@@ -1,0 +1,15 @@
+{
+  "name": "ttb-node-stasher",
+  "version": "0.0.1",
+  "description": "",
+  "homepage": "http://thethingbox.io/",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["TheThingBox","node-red","cache"],
+  "node-red": {
+  	"nodes": {
+  		"stasher": "61-stasher.js"
+  	}
+  }
+}
