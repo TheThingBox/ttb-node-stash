@@ -71,7 +71,6 @@ module.exports = function(RED) {
 		var event = `node:${config.id}`;
 
 		var handler = function(msg) {
-			console.log("receive event", msg.topic);
 			msg._event = config.event;
 			this.receive(msg);
 		}.bind(this);
@@ -79,8 +78,6 @@ module.exports = function(RED) {
 		RED.events.on(event, handler);
 
 		this.on("input", function(msg) {
-			console.log("on input", msg.topic);
-			console.log(msg._event, config.event)
 			if(!msg._event || msg._event != config.event) {
 				this.stash.setStash(msg.payload);
 				this.stash.sleep();
