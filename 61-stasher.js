@@ -71,14 +71,14 @@ module.exports = function(RED) {
 		var event = `node:${config.id}`;
 
 		var handler = function(msg) {
-			msg._event = config.event;
+			msg._event = event;
 			this.receive(msg);
 		}.bind(this);
 
 		RED.events.on(event, handler);
 
 		this.on("input", function(msg) {
-			if(!msg._event || msg._event != config.event) {
+			if(!msg._event || msg._event != event) {
 				this.stash.setStash(msg.payload);
 				this.stash.sleep();
 				this.stash.unstack();
