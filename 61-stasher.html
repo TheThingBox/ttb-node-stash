@@ -21,14 +21,26 @@ RED.nodes.registerType("stasher-in", {
     icon: "db.png",
     label: function() { return this.name|| "stasher" },
     labelStyle: function() { return this.name ? "node_label_italic" : ""; },
-    oneditprepare: function(node, ) {
+    oneditprepare: function() {
         var candidateNodes = RED.nodes.filterNodes({type:"stasher-out"});
         var inSubflow = !!RED.nodes.subflow(this.z);
         var $select = $("#node-input-out").html("");
+
         candidateNodes.forEach(function(node) {
-            var $opt = $("<option>").val(node.id).text(node.name);
+            var sublabel = "";
+            var tab = RED.nodes.workspace(node.z);
+            if (tab) {
+                sublabel = tab.label||tab.id;
+            } else {
+                tab = RED.nodes.subflow(node.z);
+                sublabel = "subflow : "+tab.name;
+            }
+            var label = `${node.name||node.id} (${sublabel})`;
+            var $opt = $("<option>").val(node.id).text(label);
             $select.append($opt);
         });
+
+        $select.val(this.out);
     }
 });
 
