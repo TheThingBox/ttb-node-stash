@@ -5,7 +5,7 @@ RED.nodes.registerType("stasher", {
         name: {value: ""},
         duration: {value: 360000, required: true, validate:function(v) { return RED.validators.number(v) && (v > 0); }}
     },
-    label: function() { return this.name|| "stasher" },
+    label: function() { return this.name || "stasher" },
     labelStyle: function() { return this.name ? "node_label_italic" : ""; }
 });
 
@@ -19,7 +19,7 @@ RED.nodes.registerType("stasher-in", {
     inputs: 1,
     outputs: 1,
     icon: "db.png",
-    label: function() { return this.name|| "stasher" },
+    label: function() { return this.name || "stasher" },
     labelStyle: function() { return this.name ? "node_label_italic" : ""; },
     oneditprepare: function() {
         var candidateNodes = RED.nodes.filterNodes({type:"stasher-out"});
@@ -55,7 +55,13 @@ RED.nodes.registerType("stasher-out", {
     outputs: 1,
     icon: "db.png",
     align: "right",
-    label: function() { return this.name|| "stasher" },
+    label: function() {
+        var name = this.name || "stasher";
+        var stashName = "";
+        var stash = RED.nodes.node(this.stash);
+        if(stash) stashName = stash.label();
+        return `${name} [${stashName}]`;
+    },
     labelStyle: function() { return this.name ? "node_label_italic" : ""; }
 });
 </script>
