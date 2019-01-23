@@ -54,14 +54,17 @@ module.exports = function(RED) {
 			if(!stash.stash) return null;
 			if(!stash.stash.date) return null;
 			if(!stash.stash.payload) return null;
-			var d = stash.stash.date+this.duration;
+			var d = stash.stash.date+stash.stash.duration;
 			if(d > Date.now()) return stash.stash.payload;
 			return null;
 		}
 
-		this.setStash = function(key, payload) {
+		this.setStash = function(key, payload, duration) {
 			var stash = this.getStashKey(key);
+			if(typeof duration != "number" || duration <= 0)
+				duration = this.duration;
 			stash.stash = {
+				duration: duration,
 				payload: payload,
 				date: Date.now()
 			};
