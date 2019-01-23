@@ -8,6 +8,11 @@ module.exports = function(RED) {
 		this.working = false;
 		this.pile = [];
 
+		if(typeof this.duration == "string")
+			this.duration = parseInt(this.duration);
+		if(typeof this.duration != "number")
+			this.duration = 3600000;
+
 		this.isWorking = function() { return this.working; }
 		this.work = function() { this.working = true; }
 		this.sleep = function() { this.working = false; }
