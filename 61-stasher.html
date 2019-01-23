@@ -104,3 +104,53 @@ RED.nodes.registerType("stasher-out", {
         <input type="text" id="node-input-stash">
     </div>
 </script>
+
+<script type="text/x-red" data-help-name="stasher-in">
+<p>Stash and cache your payload</p>
+
+<h3>Inputs</h3>
+<dl class="message-properties">
+    <dt class="optional">key <span class="property-type">string</span></dt>
+    <dd> the stash key name into your stash configuration node. By default, it uses the <code>default</code> value.</dd>
+</dl>
+
+<h3>Details</h3>
+<p>The stasher in node is linked with a stasher out node.</p>
+<p>The stasher in node check if a value is currently stashed.</p>
+<p>If no value is stashed, for the <code>msg.key</code>, the stasher in node send <code>msg</code> to the next nodes wired with him, like usually.</p>
+<p>If a value is stashed for the <code>msg.key</code>, the current <code>msg</code> jump directly to the stasher out node link with it.</p>
+<p>If the stash is processing data for the <code>msg.key</code> (the stasher out node has not reached yet) the <code>msg</code> waits and it jumps directly to stasher out node link with it when the value is stashed for this  <code>msg.key</code>.</p>
+</script>
+
+<script type="text/x-red" data-help-name="stasher-out">
+<p>Stash and cache your payload</p>
+
+<h3>Inputs</h3>
+<dl class="message-properties">
+    <dt>payload</dt>
+    <dd> the value to stash.</dd>    
+    <dt class="optional">key <span class="property-type">string</span></dt>
+    <dd> the stash key name into your stash configuration node. By default, it uses the <code>default</code> value.</dd>
+    <dt class="optional">duration <span class="property-type">number</span></dt>
+    <dd>Override the default duration in stash configuration node for the next stash value.</dd>
+</dl>
+
+<h3>Outputs</h3>
+<ol class="node-ports">
+    <li>Standard output
+        <dl class="message-properties">
+            <dt>payload</dt>
+            <dd>the stashed value is set into <code>payload</code>.</dd>
+        </dl>
+     </li>
+</ol>
+
+<h3>Details</h3>
+<p>The stasher out node set the stash value for a <code>msg.key</code>.</p>
+<p>When a stasher in node link to it receive a <code>msg</code> and a stash is set, the <code>msg</code> jumps directly to it with the stash value in it.</p>
+</script>
+
+<script type="text/x-red" data-help-name="stasher">
+<p>All stasher out node use a same stasher configuration node share the same stashed values.</p>
+<p>The stashser configuration node define a default duration for all its stash key. This value can be overrided promptly with a stasher out node (See informations about it into stasher out node inforamtion).</p>
+</script>
